@@ -1,0 +1,15 @@
+<form action="{% url 'articlelike' %}" method="post" class="post-likes"> {% csrf_token %}
+    {% if request.user.is_authenticated %}
+    <button type="submit" id="like" class="anb btn btn-success" name="article_id" value="{{article.id}}" style="border-radius: 50px;"><i style="font-size:20px" class="fa">&#xf087;</i>
+        <span class="badge badge-light bg-transparent">{{totallikes}}</span> {% csrf_token %}
+        <span class="sr-only">Post Likes</span>
+    </button>
+    {% else %}
+    <a href="{% url 'login' %}?next={{request.path}}"><button type="button" class=" anb btn btn-success" style="border-radius: 50px;"><i style="font-size:20px" class="fa">&#xf087;</i>
+            <span class="badge badge-light bg-transparent">{{totallikes}}</span>
+            <span class="sr-only">Post Likes</span></button></a>
+    {% endif %}
+</form>
+<!--                 <label><input type="checkbox">
+                    <div class="like-btn-svg"></div>
+                </label> -->

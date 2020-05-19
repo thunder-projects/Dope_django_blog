@@ -1,0 +1,36 @@
+{% extends 'Dope_blog/base.html' %}
+{% load static %}
+{% block title %} Login {% endblock %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'Dope_blog/css/signup.css' %}">
+{% endblock %}
+{% block loginactive %} active {% endblock loginactive %}
+{% block body %}
+<div id="particles-js"> </div>
+<div class="container" style="margin-top: 75px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 col-sm-8">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h3 class="card-title">Log in</h3>
+                    <hr>
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {% include 'Dope_blog/includes/form.html' %}
+                        <button type="submit" class="btn btn-primary btn-block">Log in</button>
+                    </form>
+                </div>
+                <div class="card-footer text-muted text-center" style="background-color: #343a40;">
+                    New to Dope Blog? <a href="{% url 'signup' %}">Sign up</a>
+                </div>
+            </div>
+            <div class="text-center py-2">
+                <small>
+                    <a href="{% url 'password_reset' %}" class="text-muted">Forgot your password?</a>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}<script src="{% static 'Dope_blog/js/app2.js' %}"></script>{% endblock %}

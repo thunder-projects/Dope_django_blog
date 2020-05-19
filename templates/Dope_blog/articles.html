@@ -1,0 +1,137 @@
+{% extends 'Dope_blog/base.html' %}
+{% load static %}
+{% load social_share %}
+{% block title %} Articles {% endblock %}
+{% block stylesheet %}
+<link href="{% static 'Dope_blog/css/articles.css' %}" rel="stylesheet">
+{% endblock %}
+{% block articleactive %} active {% endblock articleactive %}
+{% block navbar %}{% endblock navbar %}
+{% block body %}
+<main role="main">
+
+    
+    <div class="jumbotron text-center bg-transparent">
+        <div class="container bg-transparent">
+            <h1>Top Categories</h1>
+            <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
+            <p class="categor">
+                {% for cat in categories %}
+                <a href="/articles/{{cat.category}}" class="btn btn-{{cat.colour}} my-2" style="width: 175px;">{{cat.category}}</a>
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+    <div id="particles-js"></div>
+    <div class="album py-5">
+        <div class="container">
+            <div class="row">
+                {% if posts %}
+                {% for post in posts %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm " style="height: 400px;">
+                        
+                       {% if post.thumbnail %}
+                       <div class="embed-responsive embed-responsive-16by9">
+                            <img alt="Card image cap" class="card-img-top embed-responsive-item" src="/media/{{post.thumbnail}}" width="100%" height="200"/>
+                             </div>
+                       {% else %}
+                       <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="180" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                       {% endif %}
+                       
+                        <div class="card-body">
+                            <p class="card-text">{{post.title|slice:"0:180"}} . . .</p>
+                            <div class="d-flex justify-content-between align-items-bottom">
+                                <div class="btn-group" style="position: absolute;bottom: 10px;">
+                                    <a type="button" href="{{post.get_absolute_url}}" class="btn btn-sm btn-outline-secondary">View</a>
+                                    <!-------------------------------------- article share modal --------------------------------->
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#exampleModalCenter{{post.id}}">Share</button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModalCenter{{post.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalCenterTitle">Share</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body ">
+                                                    <ul class="social-icons row">
+                                                        <li class="col-6 share share-fb"><h6>{% post_to_facebook post.get_absolute_url "Post to Facebook!" %}</h6></li>
+                                                        <li class="col-6 share share share-tw"><h6>{% post_to_twitter "New Article: {{post.title}}. Check it out!" post.get_absolute_url "Post to Twitter" %}</h6></li>
+                                                        <li class="col-6 share share-em"><h6>{% send_email post.title "New Article: {{post.title}}. Check it out!" post.get_absolute_url "Share via email" %}</h6></li>
+                                                        <li class="col-6 share share-wa"><h6>{% post_to_whatsapp post.get_absolute_url "Share via WhatsApp" %}</h6></li>
+                                                        <li class="col-6 share share-rd"><h6>{% post_to_reddit "New article: {{post.title}}" post.get_absolute_url %}</h6></li>
+                                                        <li class="col-6 share share-tg"><h6>{% post_to_telegram "New article: {{post.title}}" post.get_absolute_url %}</h6></li>
+
+                                                    </ul>
+                                                <!--     <ul class="social-icons">
+                                                        <li class="btn-social"><span href="#" class="fa fa-facebook btn-social btn-facebook"></span></li>
+                                                        <li class="btn-social"><a href="#" class="fa fa-twitter btn-twitter"></a></li>
+                                                        <li class="btn-social"><a href="#" class="fa fa-linkedin btn-linkedin"></a></li>
+                                                        <li class="btn-social"><a href="#" class="fa fa-google-plus btn-google-plus"></a></li>
+                                                        <li class="btn-social"><a href="#" class="fa fa-pinterest btn-pinterest"></a></li>
+                                                        <li class="btn-social"><a href="#" class="fa fa-reddit btn-reddit"></a></li>
+                                                        <li class="btn-social"><a href="#" class="fa fa-dropbox btn-dropbox"></a></li>
+                                                     </ul> -->
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-muted" style="position: absolute;bottom: 15px; right: 25px">{{post.timestamp}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="text-center">
+                    <h3>Sorry, There are no <b>articles</b> available right now to your selected category... </h3>
+                </div>
+                {% endif %}
+            </div>
+            <br>
+            <!---------- pagination for articles------------------------------------- -->
+            {% if posts.has_other_pages %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    {% if posts.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="/articles/{{category}}/?page={{ posts.previous_page_number }}">Previous</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link  disabled">Previous</a>
+                    </li>
+                    {% endif %}
+                    {% for i in posts.paginator.page_range %}
+                    {% if posts.number == i %}
+                    <li class="page-item active"><a class="page-link">{{ i }}</a></li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="/articles/{{category}}/?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    {% if posts.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="/articles/{{category}}/?page={{ posts.next_page_number }}">Next</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link  disabled">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock body %}
+{% block javascript %}<script src="{% static 'Dope_blog/js/app.js' %}"></script>{% endblock %}

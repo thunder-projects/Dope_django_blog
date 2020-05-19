@@ -1,0 +1,197 @@
+{% extends 'Dope_blog/base.html' %}
+{% load static %}
+    {% block title %} Home {% endblock %}
+{% block head %}
+
+<head>
+    <meta charset="utf-8">
+
+  
+    <!-- Favicons -->
+</head>
+{% endblock %}
+{% block stylesheet %}
+<style type="text/css">
+    
+    .img-fluid {
+        
+        
+        height: 100%;
+}
+</style>
+    <!-- Bootstrap core CSS -->
+<!-- Custom styles for this template -->
+<link href="{% static '/Dope_blog/css/home.css' %}" rel="stylesheet">
+{% endblock %}
+{% block navbarclass %} fixed-top {% endblock %}
+{% block homeactive %} active {% endblock homeactive %}
+{% block navbar %}{% endblock navbar %}
+{% block body %}
+
+<body>
+    <main role="main" >
+        <div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                {% if not user.is_authenticated %}
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                {% endif %}
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+            
+            <div class="carousel-inner">
+
+                <div class="carousel-item active" style="background: rgb(132,255,107);
+background: linear-gradient(353deg, rgba(132,255,107,1) 0%, rgba(0,194,255,1) 58%, rgba(114,157,255,1) 100%);">
+                   <!--  <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                        <rect width="100%" height="100%" fill="#777" /></svg> -->
+                    <div class="container">
+                        <div class="carousel-caption text-left">
+                            <h1>Is You Check Our Latest Article?</h1>
+                            <p>{{latest.title}}</p>
+                            <p><a class="mybtn btn bg-transparent" href="#" role="button" style="border: 1px solid black;color: black;">Learn more</a></p>
+                        </div>
+                    </div>
+                </div>
+             {% if not user.is_authenticated %}
+                <div class="carousel-item " style="background: rgb(132,255,107);
+background: linear-gradient(0deg, rgba(132,255,107,1) 0%, rgba(0,194,255,1) 58%, rgba(114,157,255,1) 100%);">
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <h1>Is You Signup.</h1>
+                            <p>Nope?. then for what are you waiting, signup now get some extra benifits of our site and also not forget to subscribe our newsletter to get new article/update instantly  </p>
+                            <p><a class="mybtn btn bg-transparent" href="/signup" role="button" style="border: 1px solid black;color: black;">Sign up today</a></p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+                <div class="carousel-item" style="background: rgb(132,255,107);
+background: linear-gradient(7deg, rgba(132,255,107,1) 0%, rgba(0,194,255,1) 58%, rgba(114,157,255,1) 100%);">
+                    <div class="container">
+                        <div class="carousel-caption text-right">
+                            <h1>Wants To Explore By Category?</h1>
+                            <p>Browse our all articles by your favoraite category instant,
+                             or you can also explore by our top 3 featured categories at home page see just below down.</p>
+                            <p><a class="mybtn btn bg-transparent" href="/articles/all" role="button" style="border: 1px solid black;color: black;">Browse Articles</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <!-- Marketing messaging and featurettes
+  ================================================== -->
+  {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Message!!</strong> {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="false">&times;</span>
+    </button>
+    {% endfor %}
+    </div> 
+{% endif %}
+        <!-- Wrap the rest of the page in another container to center all the content. -->
+        <div class="container marketing" style="margin-top: 4rem;">
+            <!-- Three columns of text below the carousel -->
+            <div class="row">
+
+              {% for cat in topcats %}
+                <div class="col-lg-4" style="word-wrap: break-word;">
+                      
+                        <img class="rounded-circle" src="/media/{{cat.image}}" width="140" height="140" />
+                  
+                    <h2>{{cat.category|slice:"0:18"}}</h2>
+                    <p>{{cat.decs|slice:"0:150"}}</p>
+                    <p><a class="btn btn-secondary" href="/articles/{{cat.category}}" role="button">View &raquo;</a></p>
+                </div><!-- /.col-lg-4 -->
+              {% endfor %}
+              </div>
+
+            <!-- START THE FEATURETTES -->
+            <hr class="featurette-divider"> 
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="">{{posts.0.title}}</h2>
+                    <p class="lead">{{posts.0.text|slice:"0:220"}}</p>
+                </div>
+                <div class="col-md-5">
+                    <figure>
+                     <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" focusable="false" role="img" src="/media/{{posts.0.cover}}" width="500" height="500"  />
+                     </figure>
+                </div>
+            </div>
+
+            <hr class="featurette-divider">
+
+                <div class="row featurette">
+      <div class="col-md-7 order-md-2">
+            <h2 class="">{{posts.1.title|slice:"0:120"}}</h2>
+            <p class="lead">{{posts.1.text|slice:"0:220"}}</p>
+      </div>
+      <div class="col-md-5 order-md-1">
+        <img  class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" focusable="false" src="/media/{{posts.1.cover}}"  width="500" height="500" />
+      </div>
+    </div>
+
+            <hr class="featurette-divider">
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="">{{posts.2.title}}</h2>
+                    <p class="lead">{{posts.2.text|slice:"0:220"}}</p>
+                </div>
+                <div class="col-md-5">
+        <img class="bd-placeholder-img bd-placeholder-img-lg img-fluid mx-auto"  focusable="false" role="img" src="/media/{{posts.2.cover}}" width="500" height="500" />
+                </div>
+            </div>
+            <hr class="featurette-divider">
+            <!-- /END THE FEATURETTES -->
+        </div><!-- /.container -->
+    </main>
+</body>
+{% endblock body %}
+<!-- FOOTER -->
+{% block footer %}
+
+    
+    <footer class="footer ">
+        <div class="wrapper">
+        <div class="container">
+        <hr class="mt-4">
+        <!-- Newsletter Section-->
+        <div class="row">
+            <div class="col-md-6">
+                <h2 style="color: #ffffff">Subscribe to Newsletter</h2>
+                <p class="text-big" style="color: #ffffff">Get latest posts instantly</p>
+            </div>
+  
+                <form action="{% url 'email-list-signup' %}" class="form-inline col-md-6 " method="POST">
+                    {% csrf_token %}
+                    <div class="form-group ">
+                        {{form.as_table}}
+                     <button type="submit" class="btn btn-dark">Subscribe</button>
+                    </div>
+                </form>
+          
+        </div>
+  
+     <hr class="mb-4" style="background-color: #ccc;" >
+        <p class="float-right"><a class="text-secondary" href="#">Back to top</a></p>
+        <p class="text-secondary">&copy; 2020-2021 Yogesh Sirsat Inc. &middot;</p>
+
+      </div> 
+       </div>
+    </footer>
+    
+
+{% endblock %}
+{% block javascript %}
+
+{% endblock %}

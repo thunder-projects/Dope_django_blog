@@ -1,0 +1,139 @@
+{% extends 'Dope_blog/base.html' %}
+{% load static %}
+    {% block title %} Contact {% endblock %}
+{% block head %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+
+    </head>
+{% endblock %}
+    {% block stylesheet %}
+    <!-- Custom styles for this template -->
+    <link href="{% static '/Dope_blog/css/formvalidation.css' %}" rel="stylesheet">
+     <link href="{% static '/Dope_blog/css/contact.css' %}" rel="stylesheet"> 
+     <!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+    {% endblock %}
+{% block contactactive %} active {% endblock contactactive %}
+
+    <!-- Favicons -->
+{% block navbar %}{% endblock navbar %}
+{% block message %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Submitted!!</strong> {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="false">&times;</span>
+    </button>
+    {% endfor %}
+    </div> 
+{% endif %}
+{% endblock message %}
+{% block body %}
+
+<body class="">
+    <div class="container bg-light" style="margin-top: 75px;box-shadow: 10px 10px 8px #888888;">
+        <div class="py-5 text-center">
+            <h2>Contact Us</h2>
+            <p class="lead">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
+        </div>
+        <div class="row">
+            <div class="col-md-4 order-md-2 mb-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Connect With</span>
+                </h4>
+                <ul class="list-group mb-3">
+                    <li class="list-group-item d-flex justify-content-between list-group-item-action lh-condensed">
+                        <div>
+                            <h6 class="my-0">Mail id</h6>
+                            <small class="text-muted">Dopeblog@contact.com</small>
+                        </div>
+                        <span class="btn-social-icon" style="font-size: 25px"><a class="fa fa-google btn-google"></a></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between list-group-item-action lh-condensed">
+                        <div>
+                            <h6 class="my-0">Twitter</h6>
+                            <a href="https://www.twitter.com/"><small class="text-muted">twitter/dopeblog</small></a>
+                            <span class="btn-social-icon"><a href="https://www.twitter.com/" class="fa fa-twitter btn-twitter"></a></span>
+                        </div>
+                        </li>
+                          <li class="list-group-item d-flex justify-content-between list-group-item-action lh-condensed">
+                        <div>
+                            <h6 class="my-0">Facebook</h6>
+                            <a href="https://www.facebok.com/"><small class="text-muted">facebook/dopeblog</small></a>
+                            <span class="btn-social"><a href="https://www.facebok.com/" class="fa fa-facebook btn-social btn-facebook"></a></span>
+                        </div>
+                        </li>
+                          <li class="list-group-item d-flex justify-content-between list-group-item-action lh-condensed">
+                        <div>
+                            <h6 class="my-0">Instagram</h6>
+                            <a href="https://www.instagram.com/"><small class="text-muted">instagram/dopeblog</small></a>
+                            <span class="btn-social"><a href="https://www.instagram.com/" class="fa fa-instagram btn-social btn-instagram"></a></span>
+                        </div>
+                        </li>
+                            <li class="list-group-item d-flex justify-content-between list-group-item-action lh-condensed">
+                        <div>
+                            <h6 class="my-0">Reddit</h6>
+                            <a href="https://www.reddit.com/"><small class="text-muted">reddit/dopeblog</small></a>
+                            <span class="btn-social-icon"><a href="https://www.reddit.com/" class="fa fa-reddit btn-reddit"></a></span>
+                        </div>
+                        </li>
+                            <li class="list-group-item d-flex justify-content-between list-group-item-action lh-condensed">
+                        <div>
+                            <h6 class="my-0">Github</h6>
+                            <a href="https://www.github.com/"><small class="text-muted">github/dopeblog</small></a>
+                            <span class="btn-social-icon"><a href="https://www.github.com/" class="fa fa-github btn-github"></a></span>
+                        </div>
+                        </li>
+                      </ul>
+            </div>
+            <div class="col-md-8 order-md-1">
+                <h4 class="mb-3">Contact Form</h4>
+                <form method="post" class="needs-validation" novalidate>{% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstName">First name</label>
+                            <input type="text" class="form-control" id="firstName" name="firstname" placeholder="ex: Elon" value="" required>
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lastName">Last name</label>
+                            <input type="text" class="form-control" id="lastName" name="lastname" placeholder="ex: Musk" value="" required>
+                            <div class="invalid-feedback">
+                                Valid last name is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="ex: elonmusk@example.com" required>
+                        <div class="invalid-feedback">
+                            Valid email is required.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1">Your Query</label>
+                        <textarea class="form-control" id="query" name="query" placeholder="enter your query in details" rows="3" required></textarea>
+                        <div class="invalid-feedback">
+                            Valid query is required.
+                        </div>
+                    </div>
+                    <hr class="mb-4">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+</body>
+{% endblock body %}
+{% block javascript %}
+
+
+<script src="{% static '/Dope_blog/js/form-validation.js' %}"></script>{% endblock %}

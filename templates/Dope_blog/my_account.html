@@ -1,0 +1,35 @@
+{% extends 'Dope_blog/base.html' %}
+{% block title %} My account {% endblock %}
+{% block head %}{% endblock %}
+{% block accountactive %} active {% endblock accountactive %}
+{% block message %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Updated!!</strong> {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="false">&times;</span>
+    </button>
+    {% endfor %}
+    </div> 
+{% endif %}
+{% endblock message %}
+{% block body %}
+<div class="container bg-light" style="margin-top: 75px;box-shadow: 10px 10px 8px #888888;">
+    <br>
+    <h2 class="text-center">My account</h2>
+    <hr class="mb-4">
+        <div>
+        
+        <img src="/media/{{user.profile.avatar}}" class="rounded-circle mx-auto d-block" width="140" height="140">
+        <div align="center">
+        <a href="/settings/account/profilephoto"><button type="button" class="btn btn-link " >Change</button></a>
+        </div>
+        <form class="mt-4" method="post" novalidate>
+        {% csrf_token %}
+        {% include 'Dope_blog/includes/form.html' %}
+        <button type="submit" class="btn btn-success mb-3">Save changes</button>
+    </form>
+
+</div>
+{% endblock body %}

@@ -1,0 +1,84 @@
+{% extends 'Dope_blog/base.html' %}
+{% load static %}
+{% load social_share %}
+{% block title %}
+Search
+{% endblock %}
+{% block stylesheet %}
+<link href="{% static 'Dope_blog/css/articles.css' %}" rel="stylesheet">
+<link href="{% static 'Dope_blog/css/formvalidation.css' %}" rel="stylesheet">
+{% endblock %}
+{% block body %}
+<div class="album py-5 bg-light">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">
+                    <h1>Results as per your <b>search</b> </h1>
+                    <h4>For <b>{{query}}</b>({{lenof}} articles in {{timed}} Sec.) </h4>
+                </li>
+            </ol>
+        </nav>
+        <hr class="mb-4">
+        {% if lenof < 1 %} <blockquote class="blockquote text-center">
+            <h1 class="mb-0 display-4">{{msg}}</h1>
+            <footer class="blockquote-footer"><cite title="Source Title">Our BLog</cite></footer>
+            </blockquote>
+            {% endif %}
+            <div class="row">
+                {% for post in searchedposts %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm" style="height: 400px;">
+                       {% if post.thumbnail %}
+                       <div class="embed-responsive embed-responsive-16by9">
+                            <img alt="Card image cap" class="card-img-top embed-responsive-item" src="/media/{{post.thumbnail}}" width="100%" height="200"/>
+                             </div>
+                       {% else %}
+                       <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="180" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                       {% endif %}
+                        <div class="card-body">
+                            <p class="card-text">{{post.title|slice:"0:180"}} . . .</p>
+                            <div class="d-flex justify-content-between align-items-bottom">
+                                <div class="btn-group" style="position: absolute;bottom: 10px;">
+                                    <a type="button" href="/post/{{post.id}}" class="btn btn-sm btn-outline-secondary">View</a>
+                                    <!---------------------------------------- share button modal -------------------------------------------->
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#exampleModalCenter{{post.id}}">Share</button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModalCenter{{post.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalCenterTitle">Share</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                      <ul class="social-icons row">
+                                                        <li class="col-6 share share-fb"><h6>{% post_to_facebook post.get_absolute_url "Post to Facebook!" %}</h6></li>
+                                                        <li class="col-6 share share share-tw"><h6>{% post_to_twitter "New Article: {{post.title}}. Check it out!" post.get_absolute_url "Post to Twitter" %}</h6></li>
+                                                        <li class="col-6 share share-em"><h6>{% send_email post.title "New Article: {{post.title}}. Check it out!" post.get_absolute_url "Share via email" %}</h6></li>
+                                                        <li class="col-6 share share-wa"><h6>{% post_to_whatsapp post.get_absolute_url "Share via WhatsApp" %}</h6></li>
+                                                        <li class="col-6 share share-rd"><h6>{% post_to_reddit "New article: {{post.title}}" post.get_absolute_url %}</h6></li>
+                                                        <li class="col-6 share share-tg"><h6>{% post_to_telegram "New article: {{post.title}}" post.get_absolute_url %}</h6></li>
+
+                                                    </ul>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-muted" style="position: absolute;bottom: 15px; right: 25px">{{post.timestamp}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+    </div>
+</div>
+{% endblock body %}
+{% block javascript %}<script src="{% static '/Dope_blog/js/form-validation.js' %}"></script>{% endblock %}

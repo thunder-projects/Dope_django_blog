@@ -1,0 +1,48 @@
+{% extends 'Dope_blog/base.html' %}
+{% load static %}
+{% block title %} About {% endblock %} 
+{% block head %}{% endblock %}
+{% block stylesheet %}
+<link href="{% static 'Dope_blog/css/post.css' %}" rel="stylesheet">
+{% endblock %}
+{% block aboutactive %} active {% endblock aboutactive %}
+{% block navbar %}{% endblock navbar %}
+
+
+
+{% block body %}
+<div class="container">
+<div class="jumbotron p-4 p-md-5 text-white bg-dark" style="margin-top: 50px;">
+
+    <div class="col-md-10 px-5">
+      <h1 class="display-4 font-italic">About Us</h1>
+      <p class="lead my-3">Well, this blog is just new now so i don't have enough words to say about this blog.
+      still i am like to say in present i will post about programming and cs related stuff.....</p>
+<!--       <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p> -->
+    </div>
+  </div>
+</div>
+<hr class="mt-4">
+<div style="background-color:#e9ecef;">
+  	<div class="jumbotron jumbotron-fluid" style="text-align: center;">
+  <div class="container">
+    <h1 class="display-4" >Behind This Blog</h1>
+  </div>
+</div>
+
+  <div class="card mx-auto" style="background-color:#e9ecef;max-width: 540px;">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img src="{% static 'Dope_blog/img/myimg.jpg' %}" class="card-img" alt="...">
+    </div>
+    <div class="col-md-8" >
+      <div class="card-body">
+        <h5 class="card-title"><strong>Yogesh Sirsat</strong></h5>
+        <p class="card-text">The <b>Computer Science Student</b> who always wants to be a great programmer, always curious about new things(only amazing) and anytime anywhere just procastinate about being googler</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+  
+{% endblock body %}

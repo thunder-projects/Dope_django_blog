@@ -1,0 +1,57 @@
+<div class="container">
+<form method="post" class="comment-form" action="" >
+    <h5 for="exampleFormControlTextarea1">Enter your comment</h5>
+    {{ cform.as_p }}{% csrf_token %}
+    {% if request.user.is_authenticated %}
+    <button type="submit" class="btn btn-primary">Comment</button>
+    {% else %}
+    <a href="{% url 'login' %}?next={{request.path}}"><span class="btn btn-primary ">Comment</span></a>
+     <hr class="mb-4">
+    {% endif %}
+</form>
+{% if comments %}
+{% for comment in comments %}
+<hr class="mb-4">
+<div class="media mt-4">
+    <img src="/media/{{comment.commenter.profile.avatar}}" class="mr-3 " alt="..." height="64" width="64" style="border:3px solid black;border-radius: 40px;">
+    <div class="media-body" id="3">
+        <h5 class="mt-0">{{comment.commenter|capfirst}}</h5>
+        <h6>{{comment.comment}}</h6>
+        <div class="reply-btn mb-2" id='1'>
+            <button type="button" class="replies-btn btn btn-outline-dark dropdown-toggle">replies </button>
+        </div>
+        <div class="replied-comments container">
+            {% for reply in comment.replies.all %}
+            <div class="media mt-3">
+                <img src="/media/{{reply.commenter.profile.avatar}}" class="mr-3" alt="..." height="50" width="50" style="border:1.5px solid black;border-radius: 30px;">
+                <div class="media-body">
+                    <h5 class="mt-0">{{reply.commenter|capfirst}}</h5>
+                    <h6>{{reply.comment}}</h6>
+                </div>
+            </div>
+            {% endfor %}
+
+            <form method="post" class="reply-form" action="">                
+                   
+                    {{ cform.as_p }}{% csrf_token %}
+                    {% if request.user.is_authenticated %}
+                    <input type="hidden" name="reply_id" value="{{ comment.id }}">
+                    <input  class="btn btn-primary" type="submit" value="Reply">
+                    {% else %}
+                    <a href="{% url 'login' %}?next={{request.path}}"><span class="btn btn-primary">Reply</span></a>
+                    {% endif %}              
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<hr class="mb-4">
+{% if request.user.is_authenticated %}
+<h1>Be the <b>First</b> One To Comment On This Post</h1>
+{% else %}
+<h1>Need <b>Logged In</b> To Comment On This Post</h1>
+{% endif %}
+{% endif %}
+</div>

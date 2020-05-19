@@ -1,0 +1,244 @@
+{% extends 'Dope_blog/base.html' %}
+{% load social_share %}
+{% load form_tags widget_tweaks %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Post {% endblock %}
+{% block stylesheet %}
+<link href="{% static 'Dope_blog/css/post.css' %}" rel="stylesheet">
+<link href="{% static 'Dope_blog/css/home.css' %}" rel="stylesheet">
+<!-- <link href="{% static 'Dope_blog/css/sidebar.css' %}" rel="stylesheet"> -->
+{% endblock %}
+{% block navbar %}{% endblock navbar %}
+{% block message %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Message!!</strong> {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="false">&times;</span>
+    </button>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock message %}
+{% block body %}
+
+<body>
+    <!-- The sidebar -->
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-8 blog-main">
+                <h3 class="pb-4 mb-4 mt-4 font-italic border-bottom">
+                    From the Dope Blog
+                </h3>
+                <div class="blog-post" style="word-wrap: break-word;">
+                    <h2 class="blog-post-title">{{article.title}}</h2>
+                    <p class="blog-post-meta">{{article.timestamp}} by <strong>{{article.created_by}}</strong></p>
+                    <!-- description -->
+                    {% if article.description %}
+                    <p>{{article.description|safe}}</p>
+                    {% endif %}
+                    <hr>
+                    <!-- text of blog -->
+                    <p>{{article.text|safe}}</p>
+                    <!-- headings of blog -->
+                    {% if headings %}
+                    {% for head in headings %}
+                    <h2 id="item-{{head.id}}">{{head.heading}} </h2>
+                    <p>{{head.text|safe}}</p>
+                    <!-- subheadings of bloghead -->
+                    <h3 id="item-{{head.subheading.id}}">{{head.subheading.subheading}}</h3>
+                    <p>{{head.subheading.subtext|safe}}</p>
+                    {% endfor %}
+                    {% endif %}
+                    <!-- subheadings of blog -->
+                    {% if subheadings %}
+                    {% for subhead in subheadings %}
+                    <h3 id="item-{{subhead.subheading.id}}">{{subhead.subheading}}</h3>
+                    <p>{{subhead.subtext|safe}}</p>
+                    {% endfor %}
+                    {% endif %}
+                </div><!-- /.blog-post -->
+            </div><!-- /.blog-main -->
+            <!-- related posts -->
+            <aside class="col-md-4 blog-sidebar">
+                <div class="p-4 mb-3 bg-light rounded">
+                    <h4 class="font-italic">About</h4>
+                    <p class="mb-0">Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+                </div>
+                <div class="sidebar">
+                    {% if headings %}
+                    <h3>Table of contents</h3>
+                    <nav class="nav nav-pills flex-column">
+                        {% for head in headings %}
+                        <a class="nav-link text-secondary" href="#item-{{head.id}}">
+                            <h5>{{head.heading|capfirst}}</h5>
+                        </a>
+                        {% if head.subheading %}
+                        <nav class="nav nav-pills flex-column">
+                            <a class="nav-link ml-3 my-1 text-secondary" href="#item-{{head.subheading.id}}">
+                                <h6>{{head.subheading}}</h6>
+                            </a>
+                        </nav>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% if subheadings %}
+                        {% for subhead in subheadings %}
+                        <a class="nav-link text-secondary" href="#item-{{subhead.subheading.id}}">
+                            <h6>{{subhead.subheading|capfirst}}</h6>
+                        </a>
+                        {% endfor %}
+                        {% endif %}
+                    </nav>
+                </div>
+                <hr class="mb-2">
+                <div class="p-4">
+                    <div id="post-likes-content">
+                        {% include 'Dope_blog/articlelikes.html' %}
+                    </div>
+                    <span class="badge badge-pill badge-primary mt-4">#SHARE</span>
+                    <div class="share-links">
+                        {% post_to_facebook object_or_url "Post to Facebook!" %}
+                        {% post_to_twitter "New Article: {{article.title}}. Check it out!" object_or_url "Post to Twitter" %}
+                        {% send_email article.title "New Song: {{article.title}}. Check it out!" object_or_url "Share via email" %}
+                        {% post_to_whatsapp object_or_url "Share via WhatsApp" %}
+                        {% post_to_reddit "New article: {{article.title}}" object_or_url %}
+                        {% post_to_telegram "New article: {{article.title}}" object_or_url %}
+                    </div>
+                </div>
+                <!--                 <hr class="mb-2">
+                <div class="p-4">
+                    <h4 class="font-italic">Archives</h4>
+                    <ol class="list-unstyled mb-0">
+                        <li><a href="#">May 2020</a></li>
+                        <li><a href="#">April 2020</a></li>
+                        <li><a href="#">March 2020</a></li>
+                        <li><a href="#">February 2020</a></li>
+                        <li><a href="#">January 2020</a></li>
+                        <li><a href="#">December 2019</a></li>
+                        <li><a href="#">November 2019</a></li>
+                        <li><a href="#">October 2019</a></li>
+                        <li><a href="#">September 2019</a></li>
+                        <li><a href="#">August 2019</a></li>
+                        <li><a href="#">July 2019</a></li>
+                        <li><a href="#">June 2019</a></li>
+                    </ol>
+                </div> -->
+                <!--                 <div class="p-4">
+                    <h4 class="font-italic">Elsewhere</h4>
+                    <ol class="list-unstyled">
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Facebook</a></li>
+                    </ol>
+                </div> -->
+            </aside><!-- /.blog-sidebar -->
+        </div><!-- /.row -->
+        <!-- older newer posts pageination -->
+        <div>
+            {% if post.has_other_pages %}
+            <nav class="blog-pagination">
+                {% if post.has_previous %}
+                <a class="btn btn-outline-primary" href="{{post.previous_page_number }}">Older</a>
+                {% else %}
+                <a class="btn btn-primary disabled">Older</a>
+                {% endif %}
+                {% if post.has_next %}
+                <a class="btn btn-outline-success" href="{{post.next_page_number }}" aria-disabled="true">Newer</a>
+                {% else %}
+                <a class="btn btn-success disabled">Newer</a>
+                {% endif %}
+            </nav>
+            {% endif %}
+        </div>
+        <hr class="mb-2">
+        <!-- related posts -->
+        <h1>Related Articles</h1>
+        <hr class="mb-4">
+        {% if relatedposts %}
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static" style="margin-top: -18px;margin-left: -12px;">
+                        <strong class="d-inline-block mb-2 text-primary">Feature</strong>
+                        <h4 class="mb-0">{{relatedposts.0.title|slice:"0:85"}}</h4>
+                        <div class="mb-1 text-muted">{{relatedposts.0.timestamp}}</div>
+                        <div style="position: absolute;bottom: 4px;"> <a href="{{relatedposts.0.id}}" class="stretched-link">Continue reading...</a>
+                        </div>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c" data-darkreader-inline-fill="" style="--darkreader-inline-fill:#3e4245;"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em" data-darkreader-inline-fill="" style="--darkreader-inline-fill:#efeeec;">Thumbnail</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if relatedposts.1 %}
+            <div class="col-md-6">
+                <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static" style="margin-top: -18px;margin-left: -12px;">
+                        <strong class="d-inline-block mb-2 text-success">Trending</strong>
+                        <h4 class="mb-0">{{relatedposts.1.title|slice:"0:85"}}</h4>
+                        <div class="mb-1 text-muted">{{relatedposts.1.timestamp}}</div>
+                        <div style="position: absolute;bottom: 4px;"> <a href="{{relatedposts.1.id}}" class="stretched-link">Continue reading...</a>
+                        </div>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <img alt="bd-placeholder-img" class="bd-placeholder-img" src="/media/{{relatedposts.1.cover}}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" width="200" height="250" />
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <hr class="mb-4">
+        <h1 class="display 4">Comments Section<h1>
+                <hr class="mb-4">
+                <div class="main-comment-section">
+                    {% include 'Dope_blog/includes/comments.html' %}
+                </div>
+                  <hr class="mt-4">
+    </main>
+</body>
+{% endblock body %}
+<!-- FOOTER -->
+{% block footer %}
+
+    
+    <footer class="footer ">
+        <div class="wrapper">
+        <div class="container">
+        <hr class="mt-4">
+        <!-- Newsletter Section-->
+        <div class="row">
+            <div class="col-md-6">
+                <h2 style="color: #ffffff">Subscribe to Newsletter</h2>
+                <p class="text-big" style="color: #ffffff">Get latest posts instantly</p>
+            </div>
+  
+                <form action="{% url 'email-list-signup' %}" class="form-inline col-md-6 " method="POST">
+                    {% csrf_token %}
+                    <div class="form-group ">
+                        {{form.as_table}}
+                     <button type="submit" class="btn btn-dark">Subscribe</button>
+                    </div>
+                </form>
+          
+        </div>
+  
+     <hr class="mb-4" style="background-color: #ccc;" >
+        <p class="float-right"><a class="text-secondary" href="#">Back to top</a></p>
+        <p class="text-secondary">&copy; 2020-2021 Yogesh Sirsat Inc. &middot;</p>
+
+      </div> 
+       </div>
+    </footer>
+    
+
+{% endblock %}
+{% block javascript %}
+{% endblock %}
