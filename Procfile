@@ -1,1 +1,1 @@
-web: gunicorn locallibrary.wsgi --log-file -
+web: gunicorn Dope_Django_Blog.wsgi:application --log-file=-
