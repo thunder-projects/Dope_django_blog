@@ -51,5 +51,5 @@ urlpatterns = [
     path('post/<int:id>', views.post, name='post'),
     path('contact', views.contact, name='contact'),
     path('about', views.about, name='about'),
-#     path('<str:room_name>/', views.room, name='room'),
+# #     path('<str:room_name>/', views.room, name='room'),
 ]

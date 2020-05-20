@@ -27,11 +27,12 @@ from newsletter.models import Signup
 
 
 def home(request):
-    topcats = Category.objects.filter(pk__in=[2, 3, 7])
+    topcats = Category.objects.filter(pk__in=[2, 3, 1])
     posts = Post.objects.all()[:3]
     latest = Post.objects.latest('timestamp')
     form = EmailSignupForm()
-    return render(request, 'Dope_blog/home.html', {'posts': posts,'topcats':topcats,'latest':latest,'form':form})
+    return render(request, 'Dope_blog/home.html', {'posts': posts, 'topcats': topcats, 'latest': latest, 'form': form})
+    # {'posts': posts, 'topcats': topcats, 'latest': latest, 'form': form}
 
 
 def contact(request):
@@ -218,6 +219,11 @@ def UserPhoto(request):
     return render(request, 'Dope_blog/userphoto.html', {'form': form})
 
 
-# article = get_object_or_404(Post, pk=1)
-# article.images.filter(id=2)
-# print(article.images())
+# article = get_object_or_404(Post, pk=45)
+# print(article.topic)
+# # article.images.filter(id=2)
+# # print(article.images())
+
+# for i in range(15):
+#     Post.objects.create(topic='programming', description=f'description #{i}', title=f'title id{i}',text=f'this our {i} blog and this is sample text for sample post id {i}')
+
