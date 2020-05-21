@@ -20,6 +20,10 @@ from django.conf.urls.static import static
 from django.conf import settings
 from newsletter.views import email_list_signup
 
+admin.site.site_header = 'Yogesh Sirsat Administration'
+admin.site.site_title = 'Yogesh Sirsat'
+admin.site.index_title = 'Yogesh Sirsat Admin Access'
+
 urlpatterns = [
     path('', include('Dope_blog.urls')),
     path('admin/', admin.site.urls),

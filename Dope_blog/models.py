@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 # Create your models here.
 
 from django.db import models
@@ -92,7 +92,18 @@ class Post(models.Model):
     cover = models.ImageField('blog/images', null=True, blank=True)
     views = models.PositiveIntegerField(default=0)
     likes = models.ManyToManyField(User, blank=True)
+    is_active = models.IntegerField(default=1,
+                                    blank=True,
+                                    null=True,
+                                    help_text='1->Active, 0->Inactive',
+                                    choices=(
+                                        (1, 'Active'), (0, 'Inactive')
+                                    ))
     timestamp = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(default=timezone.now,
+                                      null=True,
+                                      blank=True
+                                      )
 
     def __str__(self):
         return self.title
