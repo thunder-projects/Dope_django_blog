@@ -29,7 +29,11 @@ from newsletter.models import Signup
 def home(request):
     topcats = Category.objects.filter(pk__in=[2, 3, 1])
     posts = Post.objects.all()[:3]
-    latest = Post.objects.latest('timestamp')
+    try:
+        latest = Post.objects.latest('timestamp')
+    except Post.DoesNotExist:
+        latest = None
+    user = None
     form = EmailSignupForm()
     return render(request, 'Dope_blog/home.html', {'posts': posts, 'topcats': topcats, 'latest': latest, 'form': form})
     # {'posts': posts, 'topcats': topcats, 'latest': latest, 'form': form}
