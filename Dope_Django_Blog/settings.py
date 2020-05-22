@@ -144,8 +144,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-
+# Simplified static file serving.
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -156,7 +156,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 
 ]
-# Simplified static file serving.
+
+
 
 # Managing media
 MEDIA_URL = '/media/'
