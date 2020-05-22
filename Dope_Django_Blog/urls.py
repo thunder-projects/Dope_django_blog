@@ -19,6 +19,8 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 from django.conf import settings
 from newsletter.views import email_list_signup
+from django.views.static import serve
+from django.conf.urls import url
 
 admin.site.site_header = 'Yogesh Sirsat Administration'
 admin.site.site_title = 'Yogesh Sirsat'
@@ -29,6 +31,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('email-signup/', email_list_signup, name='email-list-signup'),
+    url(r'^media/(?P<path>.*)$', serve,
+        {'document_root': settings.MEDIA_ROOT}),
+    url(r'^static/(?P<path>.*)$', serve,
+        {'document_root': settings.STATIC_ROOT}),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
