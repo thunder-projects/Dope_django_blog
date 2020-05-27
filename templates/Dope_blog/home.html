@@ -120,7 +120,8 @@ background: linear-gradient(7deg, rgba(132,255,107,1) 0%, rgba(0,194,255,1) 58%,
             <div class="row featurette">
                 <div class="col-md-7">
                     <h2 class="">{{posts.0.title}}</h2>
-                    <p class="lead">{{posts.0.text|slice:"0:220"|safe}}</p>
+                    <p class="lead">{{posts.0.text|slice:"0:220"|safe}}...</p>
+                    <a href="/post/{{posts.0.id}}"></a>
                 </div>
                 <div class="col-md-5">
                     <figure>
@@ -134,7 +135,8 @@ background: linear-gradient(7deg, rgba(132,255,107,1) 0%, rgba(0,194,255,1) 58%,
                 <div class="row featurette">
       <div class="col-md-7 order-md-2">
             <h2 class="">{{posts.1.title|slice:"0:120"}}</h2>
-            <p class="lead">{{posts.1.text|slice:"0:220"|safe}}</p>
+            <p class="lead">{{posts.1.text|slice:"0:220"|safe}}...</p>
+             <a href="/post/{{posts.1.id}}"></a>
       </div>
       <div class="col-md-5 order-md-1">
         <img  class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" focusable="false" src="/media/{{posts.1.cover}}"  width="500" height="500" />
@@ -145,7 +147,8 @@ background: linear-gradient(7deg, rgba(132,255,107,1) 0%, rgba(0,194,255,1) 58%,
             <div class="row featurette">
                 <div class="col-md-7">
                     <h2 class="">{{posts.2.title}}</h2>
-                    <p class="lead">{{posts.2.text|slice:"0:220"|safe}}</p>
+                    <p class="lead">{{posts.2.text|slice:"0:220"|safe}}...</p>
+                     <a href="/post/{{posts.2.id}}"></a>
                 </div>
                 <div class="col-md-5">
         <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"  focusable="false" role="img" src="/media/{{posts.2.cover}}" width="500" height="500" />
