@@ -3,12 +3,12 @@
     {% block title %} Home {% endblock %}
 {% block head %}
 
-<head>
+
     <meta charset="utf-8">
 
   
     <!-- Favicons -->
-</head>
+
 {% endblock %}
 {% block stylesheet %}
 <style type="text/css">
@@ -49,7 +49,7 @@ background: linear-gradient(353deg, rgba(132,255,107,1) 0%, rgba(0,194,255,1) 58
                         <div class="carousel-caption text-left">
                             <h1>Is You Check Our Latest Article?</h1>
                             <p>{{latest.title}}</p>
-                            <p><a class="mybtn btn bg-transparent" href="/post/{{latest.id}}" role="button" style="border: 1px solid black;color: black;">Learn more</a></p>
+                            <p><a class="mybtn btn bg-transparent" href="/post/{{latest.id}}-{{latest.slug}}" role="button" style="border: 1px solid black;color: black;">Learn more</a></p>
                         </div>
                     </div>
                 </div>

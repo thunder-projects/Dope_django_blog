@@ -15,10 +15,19 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2')
 
 
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email', )
+
+
 class UserProfileForm(forms.ModelForm):
+
     class Meta:
         model = UserProfile
         fields = ('avatar',)
+
+
 
 class CommentForm(forms.ModelForm):
     comment = forms.CharField(label='',widget=forms.Textarea(attrs={'class':'form-control','placeholder':'Text goes here','rows':3,'cols':50}))

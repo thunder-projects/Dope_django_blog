@@ -13,7 +13,11 @@
 {% for comment in comments %}
 <hr class="mb-4">
 <div class="media mt-4">
-    <img src="/media/{{comment.commenter.profile.avatar}}" class="mr-3 " alt="..." height="64" width="64" style="border:3px solid black;border-radius: 40px;">
+    {% if comment.commenter.profile.avatar %}
+    <img src="/media/{{comment.commenter.profile.avatar}}" class="mr-3 " alt="User Picture" height="64" width="64" style="border:2px solid black;border-radius: 40px;">
+    {% else %}
+        <img src="/media/avatar.png" class="mr-3 " alt="User Picture" height="64" width="64" style="border:2px solid black;border-radius: 40px;">
+    {% endif %}
     <div class="media-body" id="3">
         <h5 class="mt-0">{{comment.commenter|capfirst}}</h5>
         <h6>{{comment.comment}}</h6>
@@ -23,7 +27,11 @@
         <div class="replied-comments container">
             {% for reply in comment.replies.all %}
             <div class="media mt-3">
-                <img src="/media/{{reply.commenter.profile.avatar}}" class="mr-3" alt="..." height="50" width="50" style="border:1.5px solid black;border-radius: 30px;">
+                {% if comment.commenter.profile.avatar %}
+                <img src="/media/{{reply.commenter.profile.avatar}}" class="mr-3" alt="User Picture" height="50" width="50" style="border:1px solid black;border-radius: 30px;">
+                {% else %}
+                <img src="/media/avatar.png" class="mr-3" alt="User Picture" height="50" width="50" style="border:1px solid black;border-radius: 30px;">
+                {% endif %}
                 <div class="media-body">
                     <h5 class="mt-0">{{reply.commenter|capfirst}}</h5>
                     <h6>{{reply.comment}}</h6>

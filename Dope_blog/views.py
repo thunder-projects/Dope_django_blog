@@ -1,11 +1,12 @@
 from PIL import Image
 from django.http import HttpResponse, HttpResponseRedirect
+from django.forms import inlineformset_factory
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
-from .models import Post, Heading, Subheading, Usercontact, Comment, UserProfile, Category
+from .models import Post, Heading, Subheading, Usercontact, Comment, UserProfile, Category, About
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 import time
@@ -15,7 +16,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView, ListView, UpdateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
-from .forms import SignUpForm, CommentForm, UserProfileForm
+from .forms import SignUpForm, CommentForm, UserProfileForm, UserForm
 from django.conf import settings
 from newsletter.forms import EmailSignupForm
 from newsletter.models import Signup
@@ -57,7 +58,8 @@ def contact(request):
 
 
 def about(request):
-    return render(request, 'Dope_blog/about.html')
+    about = About.objects.get(id=1)
+    return render(request, 'Dope_blog/about.html',{'about':about})
 
 
 def articles(request, category):
@@ -86,7 +88,7 @@ def articles(request, category):
     return render(request, 'Dope_blog/articles.html', {'posts': posts, 'categories': categories,'category':category })
 
 
-def post(request, id):
+def post(request, id, slug):
     article = get_object_or_404(Post, pk=id)
     headings = article.heading.all()
     subheadings = article.subheading.all()
@@ -95,8 +97,14 @@ def post(request, id):
     comments = Comment.objects.filter(
         post=article, reply__isnull=True).order_by('-id')
     allposts = Post.objects.all()
+    page = request.GET.get('page', 17)
     paginator = Paginator(allposts, 1)
-    post = paginator.page(id)
+    try:
+        post = paginator.page(page)
+    except PageNotAnInteger:
+        post = paginator.page(17)
+    except EmptyPage:
+        post = paginator.page(paginator.num_pages)
     form = EmailSignupForm()
     if request.method == 'POST':
         cform = CommentForm(request.POST or None)
@@ -193,41 +201,55 @@ def signup(request):
     return render(request, 'Dope_blog/signup.html', {'form': form, 'profile_form': profile_form})
 
 
-@method_decorator(login_required, name='dispatch')
-class UserUpdateView(UpdateView):
-    model = User
-    fields = ('first_name', 'last_name', 'email', )
-    template_name = 'Dope_blog/my_account.html'
-    success_url = reverse_lazy('my_account')
+# @method_decorator(login_required, name='dispatch')
+# class UserUpdateView(UpdateView):
+#     model = User
+#     fields = ('first_name', 'last_name', 'email', )
+#     template_name = 'Dope_blog/my_account.html'
+#     success_url = reverse_lazy('my_account')
     
 
 
-    def get_object(self):
-        return self.request.user
+#     def get_object(self):
+#         return self.request.user
 
 
 @login_required
-def UserPhoto(request):
-    uid = request.user.profile.id
-    form = UserProfileForm()
+def Account(request):
     if request.method == 'POST':
-        form = UserProfileForm(request.POST or None,
-                               request.FILES or None)
-        if form.is_valid():
-            profile = UserProfile.objects.get(id=uid)
-            profile.avatar = form.cleaned_data['avatar']
-            profile.save()
-            return redirect('my_account')
+        u_form = UserForm(request.POST, instance=request.user)
+        p_form = UserProfileForm(request.POST,
+                                   request.FILES,
+                                   instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect('account')
+
     else:
-        form = UserProfileForm()
-    return render(request, 'Dope_blog/userphoto.html', {'form': form})
+        u_form = UserForm(instance=request.user)
+        p_form = UserProfileForm(instance=request.user.profile)
+
+    return render(request, 'Dope_blog/my_account.html', {'form': u_form, "form2": p_form, })
 
 
-# article = get_object_or_404(Post, pk=45)
-# print(article.topic)
-# # article.images.filter(id=2)
-# # print(article.images())
 
-# for i in range(15):
-#     Post.objects.create(topic='programming', description=f'description #{i}', title=f'title id{i}',text=f'this our {i} blog and this is sample text for sample post id {i}')
+
+    # if request.method == 'POST':
+    #     form = UserProfileForm(request.POST or None,
+    #                            request.FILES or None)
+    #     if form.is_valid():
+    #         profile = UserProfile.objects.get(id=uid)
+    #         profile.avatar = form.cleaned_data['avatar']
+    #         profile.save()
+    #         return redirect('my_account')
+
+
+
+
+
+
+
+
 

@@ -2,13 +2,14 @@ from django.contrib import admin
 from django.db import models
 from django.contrib import messages
 # Register your models here.
-from .models import Post, Heading, Subheading, Usercontact, Comment, UserProfile, Category
+from .models import Post, Heading, Subheading, Usercontact, Comment, UserProfile, Category,About
 
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'active', 'timestamp')
     list_filter = ('timestamp',)
     search_fields = ('title',)
+    # prepopulated_fields = {'slug': ('title',)}
 
     def get_ordering(self,request):
         if request.user.is_superuser:
@@ -38,4 +39,5 @@ admin.site.register(Usercontact)
 admin.site.register(Comment)
 admin.site.register(UserProfile)
 admin.site.register(Category)
+admin.site.register(About)
 

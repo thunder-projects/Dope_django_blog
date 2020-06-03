@@ -1,6 +1,11 @@
 {% extends 'Dope_blog/base.html' %}
+{% load static %}
 {% block title %} My account {% endblock %}
 {% block head %}{% endblock %}
+{% block stylesheet %}
+    <!-- Custom styles for this template -->
+    <link href="{% static '/Dope_blog/css/myaccount.css' %}" rel="stylesheet">
+{% endblock %}
 {% block accountactive %} active {% endblock accountactive %}
 {% block message %}
 {% if messages %}
@@ -15,21 +20,35 @@
 {% endif %}
 {% endblock message %}
 {% block body %}
-<div class="container bg-light" style="margin-top: 75px;box-shadow: 10px 10px 8px #888888;">
+<div class="container bg-light" style="box-shadow: 10px 10px 8px #888888;">
+        <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-sm-12">
     <br>
     <h2 class="text-center">My account</h2>
     <hr class="mb-4">
         <div>
-        
-        <img src="/media/{{user.profile.avatar}}" class="rounded-circle mx-auto d-block" width="140" height="140">
+        {% if request.user.profile.avatar %}
+        <img src="/media/{{request.user.profile.avatar}}" class="rounded-circle mx-auto d-block" width="140" height="140">
+        {% else %}
+        <img src="/media/avatar.png" class="rounded-circle mx-auto d-block" width="140" height="140">
+        {% endif %}
         <div align="center">
-        <a href="/settings/account/profilephoto"><button type="button" class="btn btn-link " >Change</button></a>
+       
         </div>
-        <form class="mt-4" method="post" novalidate>
+        <form class="mt-4" method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
-        {% include 'Dope_blog/includes/form.html' %}
+         {% include 'Dope_blog/includes/form.html' %}
+         <div class="divider"></div>
+           <!--  {{ formset.management_form }} -->
+         {% include 'Dope_blog/includes/form2.html' %}
+
+        <hr class="mb-4">
         <button type="submit" class="btn btn-success mb-3">Save changes</button>
     </form>
+
+</div>
+
+</div>
 
 </div>
 {% endblock body %}

@@ -36,11 +36,7 @@
 }
 
 /* goole mail */
-.fa-google {
-  background: radial-gradient(circle at 26% -9%, #DB4437 44%, #0F9D58 30%, #F4B400 50%,  #4285F4 50%);
-  -webkit-background-clip: text;
-          /* Also define standard property for compatibility */
-          background-clip: text;
+.fa-mail {
   -webkit-text-fill-color: transparent;
   position: absolute;
     right: 2px;
@@ -62,13 +58,13 @@
 .fa-reddit {
   color: #FF5700;
   position: absolute;
-  left: -31px;
+  left: -33px;
 }
 /* github */
 .fa-github {
   color: #000000;
   position: absolute;
-  left: -28px;
+  left: -31px;
 
 }
 
@@ -85,4 +81,9 @@ user-select: none;
 .bd-placeholder-img-lg {
   font-size: 3.5rem;
 }
+}
+@media screen and (min-width: 768px) {
+  .container {
+     margin-top: 75px;
+  }
 }

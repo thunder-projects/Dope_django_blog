@@ -9,8 +9,13 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from PIL import Image
+import io
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.utils.text import slugify
 
 
 COLOUR_CHOICES = (
@@ -29,18 +34,22 @@ class Category(models.Model):
     category = models.CharField(max_length=254)
     colour = models.CharField(max_length=254, choices=COLOUR_CHOICES)
     image = models.ImageField(
-        upload_to='blog/images', default='blog/images/defaultforcat.png', null=True, blank=True)
+        upload_to='blog/images/', default='blog/images/defaultforcat.png', null=True, blank=True)
     decs = models.CharField(max_length=255, default='')
 
     def __str__(self):
         return self.category
-
+    
+    # def save(self, *args, **kwargs):
+    #     if self.image:
+    #         self.image = get_thumbnail(self.image, '140x140', quality=75, format='JPEG')
+    #     super(Category, self).save(*args, **kwargs)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name='profile', null=True)
     avatar = models.ImageField(
-        upload_to='blog/images', default='blog/images/iconfinder_user-01_186382.png', null=True, blank=True)
+        default='avatar.png', null=True, blank=True)
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
@@ -51,8 +60,41 @@ class UserProfile(models.Model):
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
 
-    # def __str__(self):
-    #     return self.user
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
+
+    def save(self):
+        super().save()
+        if self.avatar:
+            img = Image.open(self.avatar.path)
+            width, height = img.size  # Get dimensions
+
+            if width > 300 and height > 300:
+                    # keep ratio but shrink down
+                img.thumbnail((width, height))
+
+                # check which one is smaller
+            if height < width:
+                # make square by cutting off equal amounts left and right
+                left = (width - height) / 2
+                right = (width + height) / 2
+                top = 0
+                bottom = height
+                img = img.crop((left, top, right, bottom))
+
+            elif width < height:
+                # make square by cutting off bottom
+                left = 0
+                right = width
+                top = 0
+                bottom = width
+                img = img.crop((left, top, right, bottom))
+
+            if width > 300 and height > 300:
+                img.thumbnail((300, 300))
+
+            img.save(self.avatar.path)
 
 
 class Subheading(models.Model):
@@ -81,6 +123,7 @@ class Post(models.Model):
     topic = models.CharField(max_length=25, null=True)
     description = RichTextField(max_length=1000, blank=True, null=True)
     title = models.TextField(max_length=500)
+    slug = models.SlugField(default='',editable=False,max_length=100,)
     created_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='posts', null=True)
     heading = models.ManyToManyField(
@@ -112,7 +155,17 @@ class Post(models.Model):
         return self.likes.count()
 
     def get_absolute_url(self):
-        return reverse('post', args=[int(self.id)])
+        kwargs = {
+            'id': self.id,
+            'slug': self.slug
+        }
+        return reverse('post', kwargs=kwargs)
+
+    def save(self, *args, **kwargs):
+        value = self.title
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
+
 
 
 class Usercontact(models.Model):
@@ -156,3 +209,16 @@ class Comment(models.Model):
 
 
 # print(Post.objects.filter(pk=1))
+class About(models.Model):
+    about_text = RichTextUploadingField(max_length=5000, null=True)
+    about_me = RichTextUploadingField(max_length=500, null=True , config_name='simple')
+    my_pic = models.ImageField(upload_to='blog/aboutme/', default='avatar.png', null=True, blank=True)
+
+    def save(self):
+        super().save()
+        img = Image.open(self.my_pic.path)
+
+        if img.height > 1280 or img.width > 720:
+            output_size = (1280, 720)
+            img.thumbnail(output_size)
+            img.save(self.my_pic.path)

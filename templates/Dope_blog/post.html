@@ -142,12 +142,12 @@
             {% if post.has_other_pages %}
             <nav class="blog-pagination">
                 {% if post.has_previous %}
-                <a class="btn btn-outline-primary" href="{{post.previous_page_number }}">Older</a>
+                <a class="btn btn-outline-primary" href="{{post.previous_page_number }}-{{article.slug}}">Older</a>
                 {% else %}
                 <a class="btn btn-primary disabled">Older</a>
                 {% endif %}
                 {% if post.has_next %}
-                <a class="btn btn-outline-success" href="{{post.next_page_number }}" aria-disabled="true">Newer</a>
+                <a class="btn btn-outline-success" href="{{post.next_page_number }}-{{article.slug}}" aria-disabled="true">Newer</a>
                 {% else %}
                 <a class="btn btn-success disabled">Newer</a>
                 {% endif %}
