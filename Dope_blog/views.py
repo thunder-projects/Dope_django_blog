@@ -97,14 +97,22 @@ def post(request, id, slug):
     comments = Comment.objects.filter(
         post=article, reply__isnull=True).order_by('-id')
     allposts = Post.objects.all()
-    page = request.GET.get('page', 17)
+    page = request.GET.get('page', 1)
     paginator = Paginator(allposts, 1)
     try:
         post = paginator.page(page)
     except PageNotAnInteger:
-        post = paginator.page(17)
+        post = paginator.page(1)
     except EmptyPage:
         post = paginator.page(paginator.num_pages)
+    prev_slug = ''
+    next_slug = ''
+    if Post.objects.filter(id=id-1):
+        if id-1 > 0:
+            prev_slug = Post.objects.get(id=id-1).slug
+    if Post.objects.filter(id=id-1):
+        if id+1 <= allposts.count() :
+            next_slug = Post.objects.get(id=id+1).slug
     form = EmailSignupForm()
     if request.method == 'POST':
         cform = CommentForm(request.POST or None)
@@ -135,6 +143,8 @@ def post(request, id, slug):
         'cform': cform,
         'totallikes' : article.totalLikes(),
         'form':form,
+        'next_slug': next_slug,
+        'prev_slug':prev_slug,
         # 'totallikes' : totalLikes()
         }
 
